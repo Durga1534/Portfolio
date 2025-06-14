@@ -8,7 +8,6 @@ import ProjectsSection from '../components/ProjectsSection';
 import ContactSection from '../components/ContactSection';
 import Navigation from '../components/Navigation';
 import BackToTop from '../components/BackToTop';
-import { useTheme } from '@/contexts/ThemeContext';
 
 const Index = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
