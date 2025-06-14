@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Github, ExternalLink, Download, Menu, X } from 'lucide-react';
@@ -11,7 +10,8 @@ import BackToTop from '../components/BackToTop';
 
 const Index = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { theme } = useTheme();
+  // Simple theme state - you can set this to 'dark' or 'light' as needed
+  const [theme, setTheme] = useState('dark'); // or 'light'
 
   return (
     <div className={`min-h-screen transition-colors duration-300 relative overflow-x-hidden ${
@@ -57,10 +57,10 @@ const Index = () => {
           }}
         />
       </div>
-
+      
       {/* Navigation */}
       <Navigation isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-
+      
       {/* Main Content */}
       <div className="relative z-10">
         <HeroSection />
@@ -68,7 +68,7 @@ const Index = () => {
         <ProjectsSection />
         <ContactSection />
       </div>
-
+      
       {/* Back to Top Button */}
       <BackToTop />
     </div>
