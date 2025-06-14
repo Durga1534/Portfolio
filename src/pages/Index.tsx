@@ -10,15 +10,10 @@ import BackToTop from '../components/BackToTop';
 
 const Index = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // Simple theme state - you can set this to 'dark' or 'light' as needed
-  const [theme, setTheme] = useState('dark'); // or 'light'
+
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 relative overflow-x-hidden ${
-      theme === 'dark' 
-        ? 'bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900' 
-        : 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50'
-    }`}>
+    <div className="min-h-screen transition-colors duration-300 relative overflow-x-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
       {/* Simplified Background */}
       <div className="fixed inset-0 z-0">
         <div
@@ -29,9 +24,7 @@ const Index = () => {
           }}
         ></div>
         <motion.div
-          className={`absolute top-20 left-20 w-72 h-72 rounded-full blur-3xl ${
-            theme === 'dark' ? 'bg-purple-500/10' : 'bg-purple-300/20'
-          }`}
+          className="absolute top-20 left-20 w-72 h-72 rounded-full blur-3xl bg-purple-500/10"
           animate={{
             scale: [1, 1.1, 1],
             opacity: [0.3, 0.5, 0.3],
@@ -43,9 +36,7 @@ const Index = () => {
           }}
         />
         <motion.div
-          className={`absolute bottom-20 right-20 w-96 h-96 rounded-full blur-3xl ${
-            theme === 'dark' ? 'bg-blue-500/10' : 'bg-blue-300/20'
-          }`}
+          className="absolute bottom-20 right-20 w-96 h-96 rounded-full blur-3xl bg-blue-500/10"
           animate={{
             scale: [1, 1.2, 1],
             opacity: [0.2, 0.4, 0.2],
