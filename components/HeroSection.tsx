@@ -67,18 +67,20 @@ const HeroSection: FC<HeroProps> = ({
     }
   };
 
+  //Updated to downlaod actual resume
   const downloadResume = () => {
-    // Replace with your actual resume URL
-    const resumeUrl = "/resume.pdf";
-    const link = document.createElement('a');
-    link.href = resumeUrl;
-    link.download = "Durga_Prasad_Resume.pdf";
-    link.click();
-  };
+  const link = document.createElement('a');
+  link.href = '/Konduru Durga Prasad.pdf';
+  link.download = 'Durga_Prasad_Resume.pdf';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 
   return (
     <section
-      id="home" // Added the ID for navbar navigation
+      id="home" 
       className="relative min-h-screen flex flex-col items-center justify-center px-8 py-16 bg-white dark:bg-black scroll-mt-20"
     >
       {/* Enhanced Background Elements */}
@@ -165,7 +167,9 @@ const HeroSection: FC<HeroProps> = ({
             className="group px-10 py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-semibold rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
           >
             <span className="flex items-center justify-center gap-2">
-              View My Work
+                <a href="#projects">
+                    View My Work
+                </a>
               <motion.span
                 className="inline-block"
                 animate={{ x: [0, 4, 0] }}
