@@ -20,10 +20,10 @@ export const SocialDock: FC<{ className?: string }> = ({ className = "" }) => (
         href="https://github.com/Durga1534"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-gray-700 dark:text-yellow-400 hover:text-yellow-500 transition-colors duration-300"
+        className="text-gray-700 hover:text-yellow-600 transition-colors duration-300"
         title="GitHub Profile"
       >
-        <FaGithub size={20} />
+        <FaGithub size={22} />
       </a>
     </DockIcon>
     <DockIcon>
@@ -31,19 +31,19 @@ export const SocialDock: FC<{ className?: string }> = ({ className = "" }) => (
         href="https://www.linkedin.com/in/durgaprasad23"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-gray-700 dark:text-yellow-400 hover:text-yellow-500 transition-colors duration-300"
+        className="text-gray-700 hover:text-yellow-600 transition-colors duration-300"
         title="LinkedIn Profile"
       >
-        <FaLinkedin size={20} />
+        <FaLinkedin size={22} />
       </a>
     </DockIcon>
     <DockIcon>
       <a
         href="mailto:kondurudurgaprasad.2@gmail.com"
-        className="text-gray-700 dark:text-yellow-400 hover:text-yellow-500 transition-colors duration-300"
+        className="text-gray-700 hover:text-yellow-600 transition-colors duration-300"
         title="Send Email"
       >
-        <FaEnvelope size={20} />
+        <FaEnvelope size={22} />
       </a>
     </DockIcon>
   </Dock>
@@ -59,7 +59,7 @@ const HeroSection: FC<HeroProps> = ({
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      const offsetTop = element.offsetTop - 80; // Account for navbar height
+      const offsetTop = element.offsetTop - 80;
       window.scrollTo({
         top: offsetTop,
         behavior: 'smooth'
@@ -67,132 +67,126 @@ const HeroSection: FC<HeroProps> = ({
     }
   };
 
-  //Updated to downlaod actual resume
   const downloadResume = () => {
-  const link = document.createElement('a');
-  link.href = '/Konduru Durga Prasad.pdf';
-  link.download = 'Durga_Prasad_Resume.pdf';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
-
+    const link = document.createElement('a');
+    link.href = '/Konduru Durga Prasad.pdf';
+    link.download = 'Durga_Prasad_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <section
       id="home" 
-      className="relative min-h-screen flex flex-col items-center justify-center px-8 py-16 bg-white dark:bg-black scroll-mt-20"
+      className="relative min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-20 bg-gradient-to-b from-white to-gray-50 scroll-mt-20"
     >
-      {/* Enhanced Background Elements */}
+      {/* Background Decoration */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-20 left-20 w-32 h-32 bg-yellow-200 rounded-full opacity-20 animate-pulse" />
-        <div className="absolute bottom-32 right-16 w-24 h-24 bg-blue-200 rounded-full opacity-20 animate-pulse delay-75" />
-        <div className="absolute top-1/2 right-32 w-16 h-16 bg-purple-200 rounded-full opacity-20 animate-pulse delay-150" />
-        <div className="absolute top-1/3 left-1/4 w-8 h-8 bg-green-200 rounded-full opacity-15 animate-pulse delay-300" />
+        <div className="absolute top-20 right-10 w-72 h-72 bg-yellow-200 rounded-full opacity-20 blur-3xl" />
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-blue-200 rounded-full opacity-20 blur-3xl" />
+        <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-purple-200 rounded-full opacity-15 blur-3xl" />
       </div>
 
-      <div className="max-w-5xl mx-auto text-center space-y-8">
-        {/* Profile Image with better error handling */}
+      <div className="max-w-5xl mx-auto text-center space-y-6">
+        {/* Profile Image */}
         <motion.div
-          initial={{ scale: 0, rotate: -180 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
-          className="mb-8"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.1 }}
+          className="mb-6"
         >
-          <div className="w-36 h-36 mx-auto rounded-full bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 p-1 shadow-2xl overflow-hidden">
+          <div className="w-32 h-32 md:w-40 md:h-40 mx-auto rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 p-1 shadow-xl">
             {image && !imageError ? (
               <Image
                 src={image}
                 alt={`${name} - Full Stack Developer`}
-                className="w-full h-full rounded-full object-cover bg-gray-100"
+                className="w-full h-full rounded-full object-cover bg-white"
                 onError={() => setImageError(true)}
-                width={200}
-                height={200}
+                width={160}
+                height={160}
                 loading="eager"
+                priority
               />
             ) : (
-              <div className="w-full h-full rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-4xl font-bold text-gray-700">
+              <div className="w-full h-full rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-3xl font-bold text-gray-700">
                 {name.split(' ').map(word => word.charAt(0)).join('')}
               </div>
             )}
           </div>
         </motion.div>
 
-        {/* Enhanced Main Heading */}
+        {/* Main Heading */}
         <motion.h1
-          initial={{ opacity: 0, y: -50 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-5xl md:text-7xl font-bold text-gray-800 dark:text-yellow-400 leading-tight"
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight"
         >
-          Hello, I&apos;m{" "}
-          <span className="bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
+          Hello, I'm{" "}
+          <span className="bg-gradient-to-r from-yellow-500 to-yellow-600 bg-clip-text text-transparent">
             {name}
           </span>
         </motion.h1>
 
-        {/* Enhanced Subtitle */}
+        {/* Subtitle */}
         <motion.p
-          initial={{ opacity: 0, y: -30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="text-2xl md:text-3xl text-gray-600 dark:text-gray-300 mb-8"
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="text-xl md:text-2xl text-gray-700 font-medium"
         >
-          I&apos;m a{" "}
-          <span className="text-yellow-500 font-semibold bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-lg">
+          I'm a{" "}
+          <span className="text-yellow-600 font-semibold">
             {desc}
           </span>
         </motion.p>
 
-        {/* Enhanced Description */}
+        {/* Description */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-          className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed"
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed px-4"
         >
           Passionate about creating beautiful, functional, and user-friendly applications
           that solve real-world problems with clean, efficient code and modern technologies.
         </motion.p>
 
-        {/* Enhanced CTA Buttons */}
+        {/* CTA Buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.9 }}
-          className="flex flex-col sm:flex-row gap-6 justify-center mb-16"
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center pt-6"
         >
-          <button 
-            onClick={() => scrollToSection('projects')}
-            className="group px-10 py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-semibold rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+          <a 
+            href="#projects"
+            className="group inline-flex items-center justify-center gap-2 px-8 py-3 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold rounded-lg transition-all duration-300 hover:shadow-lg"
           >
-            <span className="flex items-center justify-center gap-2">
-                <a href="#projects">
-                    View My Work
-                </a>
-              <motion.span
-                className="inline-block"
-                animate={{ x: [0, 4, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                →
-              </motion.span>
-            </span>
-          </button>
+            View My Work
+            <motion.span
+              className="inline-block"
+              animate={{ x: [0, 4, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              →
+            </motion.span>
+          </a>
           <button 
             onClick={downloadResume}
-            className="px-10 py-4 border-2 border-yellow-500 text-yellow-600 dark:text-yellow-400 hover:bg-yellow-500 hover:text-white font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg"
+            className="px-8 py-3 border-2 border-gray-300 text-gray-700 hover:border-yellow-400 hover:bg-yellow-50 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
           >
             Download Resume
           </button>
         </motion.div>
 
-        {/* Magic UI Social Dock */}
+        {/* Social Links */}
         <motion.div
-          initial={{ opacity: 0, y: 100 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.1 }}
-          className="flex justify-center"
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="flex justify-center pt-8"
         >
           <SocialDock />
         </motion.div>
@@ -201,19 +195,20 @@ const HeroSection: FC<HeroProps> = ({
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.5 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          transition={{ duration: 1, delay: 1 }}
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden md:block"
         >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
+          <motion.button
+            animate={{ y: [0, 8, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="text-gray-400 cursor-pointer"
             onClick={() => scrollToSection('about')}
+            className="cursor-pointer focus:outline-none"
+            aria-label="Scroll to next section"
           >
-            <div className="w-6 h-10 border-2 border-gray-300 rounded-full flex justify-center">
+            <div className="w-6 h-10 border-2 border-gray-300 rounded-full flex justify-center hover:border-yellow-400 transition-colors duration-300">
               <div className="w-1 h-3 bg-gray-300 rounded-full mt-2"></div>
             </div>
-          </motion.div>
+          </motion.button>
         </motion.div>
       </div>
     </section>
