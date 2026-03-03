@@ -1,101 +1,96 @@
 "use client";
 
-import React, { FC } from "react";
-import { motion } from "framer-motion";
-import { FaReact, FaNodeJs, FaDatabase, FaGitAlt, FaGithub } from "react-icons/fa";
-import { 
-  SiNextdotjs, SiJavascript, SiTypescript, SiTailwindcss, SiMongodb, 
-  SiRender, SiSentry, SiVercel, SiExpress, SiFirebase, SiAppwrite, SiSupabase, 
-  SiRedis, SiDocker, SiPostgresql, SiStripe
+import React, { FC, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaReact, FaNodeJs, FaGitAlt, FaGithub } from "react-icons/fa";
+import {
+  SiNextdotjs, SiJavascript, SiTypescript, SiTailwindcss, SiMongodb,
+  SiRender, SiSentry, SiVercel, SiExpress, SiFirebase, SiAppwrite,
+  SiSupabase, SiRedis, SiDocker, SiPostgresql, SiStripe,
 } from "react-icons/si";
 import { BiNetworkChart } from "react-icons/bi";
 import { RiShieldCheckFill, RiKey2Fill } from "react-icons/ri";
 
 interface Skill {
   name: string;
-  icon: JSX.Element;
+  icon: React.ReactElement;
   category: string;
+  glow: string;
 }
+
 
 const skills: Skill[] = [
   // Frontend
-  { name: "React", icon: <FaReact className="text-sky-500" />, category: "Frontend" },
-  { name: "JavaScript", icon: <SiJavascript className="text-yellow-500" />, category: "Frontend" },
-  { name: "Next.js", icon: <SiNextdotjs className="text-gray-900" />, category: "Frontend" },
-  { name: "TypeScript", icon: <SiTypescript className="text-blue-600" />, category: "Frontend" },
-  { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" />, category: "Frontend" },
-  
+  { name: "React", icon: <FaReact />, category: "Frontend", glow: "hover:shadow-sky-500/30" },
+  { name: "Next.js", icon: <SiNextdotjs />, category: "Frontend", glow: "hover:shadow-white/20" },
+  { name: "TypeScript", icon: <SiTypescript />, category: "Frontend", glow: "hover:shadow-blue-500/30" },
+  { name: "JavaScript", icon: <SiJavascript />, category: "Frontend", glow: "hover:shadow-yellow-400/30" },
+  { name: "Tailwind CSS", icon: <SiTailwindcss />, category: "Frontend", glow: "hover:shadow-cyan-400/30" },
   // Backend
-  { name: "Node.js", icon: <FaNodeJs className="text-green-600" />, category: "Backend" },
-  { name: "Express.js", icon: <SiExpress className="text-gray-900" />, category: "Backend" },
-  { name: "REST APIs", icon: <BiNetworkChart className="text-purple-600" />, category: "Backend" },
-  { name: "JWT Auth", icon: <RiShieldCheckFill className="text-blue-600" />, category: "Backend" },
-  { name: "OAuth", icon: <RiKey2Fill className="text-orange-600" />, category: "Backend" },
-  
+  { name: "Node.js", icon: <FaNodeJs />, category: "Backend", glow: "hover:shadow-green-500/30" },
+  { name: "Express.js", icon: <SiExpress />, category: "Backend", glow: "hover:shadow-white/20" },
+  { name: "REST APIs", icon: <BiNetworkChart />, category: "Backend", glow: "hover:shadow-purple-500/30" },
+  { name: "JWT Auth", icon: <RiShieldCheckFill />, category: "Backend", glow: "hover:shadow-blue-500/30" },
+  { name: "OAuth", icon: <RiKey2Fill />, category: "Backend", glow: "hover:shadow-orange-500/30" },
   // Database
-  { name: "MongoDB", icon: <SiMongodb className="text-green-700" />, category: "Database" },
-  { name: "PostgreSQL", icon: <SiPostgresql className="text-blue-700" />, category: "Database" },
-  { name: "Redis", icon: <SiRedis className="text-red-600" />, category: "Database" },
-  { name: "Firebase", icon: <SiFirebase className="text-yellow-600" />, category: "Database" },
-  { name: "Supabase", icon: <SiSupabase className="text-green-600" />, category: "Database" },
-  { name: "Appwrite", icon: <SiAppwrite className="text-pink-600" />, category: "Database" },
-  
-  // Tools & Deployment
-  { name: "Git", icon: <FaGitAlt className="text-orange-600" />, category: "Tools" },
-  { name: "GitHub", icon: <FaGithub className="text-gray-900" />, category: "Tools" },
-  { name: "Docker", icon: <SiDocker className="text-blue-600" />, category: "Tools" },
-  { name: "Vercel", icon: <SiVercel className="text-gray-900" />, category: "Tools" },
-  { name: "Render", icon: <SiRender className="text-purple-600" />, category: "Tools" },
-  { name: "Sentry", icon: <SiSentry className="text-purple-700" />, category: "Tools" },
-  { name: "Stripe", icon: <SiStripe className="text-indigo-600" />, category: "Tools" },
+  { name: "MongoDB", icon: <SiMongodb />, category: "Database", glow: "hover:shadow-green-600/30" },
+  { name: "PostgreSQL", icon: <SiPostgresql />, category: "Database", glow: "hover:shadow-blue-600/30" },
+  { name: "Redis", icon: <SiRedis />, category: "Database", glow: "hover:shadow-red-500/30" },
+  { name: "Firebase", icon: <SiFirebase />, category: "Database", glow: "hover:shadow-yellow-500/30" },
+  { name: "Supabase", icon: <SiSupabase />, category: "Database", glow: "hover:shadow-green-400/30" },
+  { name: "Appwrite", icon: <SiAppwrite />, category: "Database", glow: "hover:shadow-pink-500/30" },
+  // Tools
+  { name: "Git", icon: <FaGitAlt />, category: "Tools", glow: "hover:shadow-orange-500/30" },
+  { name: "GitHub", icon: <FaGithub />, category: "Tools", glow: "hover:shadow-white/20" },
+  { name: "Docker", icon: <SiDocker />, category: "Tools", glow: "hover:shadow-blue-500/30" },
+  { name: "Vercel", icon: <SiVercel />, category: "Tools", glow: "hover:shadow-white/20" },
+  { name: "Render", icon: <SiRender />, category: "Tools", glow: "hover:shadow-violet-500/30" },
+  { name: "Sentry", icon: <SiSentry />, category: "Tools", glow: "hover:shadow-purple-600/30" },
+  { name: "Stripe", icon: <SiStripe />, category: "Tools", glow: "hover:shadow-indigo-500/30" },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { 
-    opacity: 1,
-    transition: { 
-      staggerChildren: 0.05
-    }
-  }
+const CATEGORIES = ["All", "Frontend", "Backend", "Database", "Tools"];
+
+const categoryColors: Record<string, string> = {
+  Frontend: "from-sky-500 to-blue-500",
+  Backend: "from-green-500 to-emerald-500",
+  Database: "from-orange-500 to-red-500",
+  Tools: "from-violet-500 to-purple-500",
 };
 
-const skillVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: { duration: 0.4 }
-  }
-};
+const SkillCard: FC<{ skill: Skill; index: number }> = ({ skill, index }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+    animate={{ opacity: 1, y: 0, scale: 1 }}
+    exit={{ opacity: 0, y: -10, scale: 0.9 }}
+    transition={{ duration: 0.3, delay: index * 0.04 }}
+    whileHover={{ y: -4, scale: 1.05 }}
+    className={`glass-card rounded-2xl p-4 flex flex-col items-center gap-2 cursor-default group transition-all duration-300 hover:border-white/20 hover:shadow-lg ${skill.glow}`}
+  >
+    <div className="text-2xl group-hover:scale-110 transition-transform duration-300 text-slate-300 group-hover:text-white">
+      {skill.icon}
+    </div>
+    <span className="text-xs font-medium text-slate-400 group-hover:text-slate-200 transition-colors duration-300 text-center leading-tight">
+      {skill.name}
+    </span>
+  </motion.div>
+);
 
 const Skills: FC = () => {
-  const frontendSkills = skills.filter(s => s.category === "Frontend");
-  const backendSkills = skills.filter(s => s.category === "Backend");
-  const databaseSkills = skills.filter(s => s.category === "Database");
-  const toolSkills = skills.filter(s => s.category === "Tools");
+  const [active, setActive] = useState("All");
 
-  const SkillBadge: FC<{ skill: Skill }> = ({ skill }) => (
-    <motion.div
-      variants={skillVariants}
-      whileHover={{ y: -3, transition: { duration: 0.2 } }}
-      className="flex items-center gap-2 px-4 py-3 bg-white rounded-lg border border-gray-200 hover:border-yellow-400 hover:shadow-md transition-all duration-200 group"
-    >
-      <span className="text-2xl group-hover:scale-110 transition-transform duration-200">
-        {skill.icon}
-      </span>
-      <span className="text-sm font-medium text-gray-700">
-        {skill.name}
-      </span>
-    </motion.div>
-  );
+  const filtered = active === "All" ? skills : skills.filter((s) => s.category === active);
 
   return (
     <section
       id="skills"
-      className="scroll-mt-20 bg-gradient-to-b from-white to-gray-50 py-20"
+      className="relative bg-[#0a0a0f] py-24 overflow-hidden scroll-mt-20"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Background glows */}
+      <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-violet-600/8 rounded-full blur-[120px] pointer-events-none -translate-y-1/2" />
+      <div className="absolute top-1/2 right-0 w-[300px] h-[300px] bg-cyan-600/8 rounded-full blur-[100px] pointer-events-none -translate-y-1/2" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -104,92 +99,79 @@ const Skills: FC = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Skills & Tools
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold text-violet-400 bg-violet-500/10 border border-violet-500/20 tracking-widest uppercase mb-4">
+            Tech Stack
+          </span>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
+            Skills &{" "}
+            <span className="gradient-text">Tools</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
             Technologies I use to bring ideas to life
           </p>
-          <div className="w-24 h-1 bg-yellow-400 mx-auto mt-6 rounded-full" />
+          <div className="w-20 h-0.5 bg-gradient-to-r from-violet-500 to-cyan-500 mx-auto mt-6 rounded-full" />
         </motion.div>
 
-        {/* Frontend & Backend Section */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {/* Frontend */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
-              Frontend
-            </h3>
-            <div className="flex flex-wrap gap-3">
-              {frontendSkills.map((skill) => (
-                <SkillBadge key={skill.name} skill={skill} />
-              ))}
-            </div>
-          </motion.div>
+        {/* Category tabs */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="flex flex-wrap justify-center gap-2 mb-12"
+        >
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActive(cat)}
+              className={`relative px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${active === cat
+                ? "text-white"
+                : "text-slate-400 hover:text-white glass-card hover:border-white/15"
+                }`}
+            >
+              {active === cat && (
+                <motion.div
+                  layoutId="activeSkillTab"
+                  className={`absolute inset-0 rounded-xl bg-gradient-to-r ${cat === "All"
+                    ? "from-indigo-500 to-violet-500"
+                    : categoryColors[cat]
+                    }`}
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+                />
+              )}
+              <span className="relative z-10">{cat}</span>
+            </button>
+          ))}
+        </motion.div>
 
-          {/* Backend */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
-              Backend
-            </h3>
-            <div className="flex flex-wrap gap-3">
-              {backendSkills.map((skill) => (
-                <SkillBadge key={skill.name} skill={skill} />
-              ))}
-            </div>
-          </motion.div>
-        </div>
+        {/* Skills grid */}
+        <motion.div
+          layout
+          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3"
+        >
+          <AnimatePresence mode="popLayout">
+            {filtered.map((skill, i) => (
+              <SkillCard key={skill.name} skill={skill} index={i} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
 
-        {/* Database & Tools Section */}
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Database */}
+        {/* Legend */}
+        {active === "All" && (
           <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="flex flex-wrap justify-center gap-4 mt-12"
           >
-            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
-              Database
-            </h3>
-            <div className="flex flex-wrap gap-3">
-              {databaseSkills.map((skill) => (
-                <SkillBadge key={skill.name} skill={skill} />
-              ))}
-            </div>
+            {Object.entries(categoryColors).map(([cat, gradient]) => (
+              <div key={cat} className="flex items-center gap-2">
+                <div className={`w-2.5 h-2.5 rounded-full bg-gradient-to-r ${gradient}`} />
+                <span className="text-xs text-slate-500">{cat}</span>
+              </div>
+            ))}
           </motion.div>
-
-          {/* Tools & Deployment */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
-              Tools & Deployment
-            </h3>
-            <div className="flex flex-wrap gap-3">
-              {toolSkills.map((skill) => (
-                <SkillBadge key={skill.name} skill={skill} />
-              ))}
-            </div>
-          </motion.div>
-        </div>
+        )}
       </div>
     </section>
   );

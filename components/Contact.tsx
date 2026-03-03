@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Check, Loader2, Mail, User, MessageSquare } from 'lucide-react';
+import { Check, Loader2, Mail, User, MessageSquare, Send } from 'lucide-react';
+import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import emailjs from 'emailjs-com';
 
 export default function Contact() {
@@ -17,13 +18,10 @@ export default function Contact() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const formRef = useRef<HTMLFormElement>(null);
-  const containerRef = useRef(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.3 });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
     try {
       await emailjs.sendForm(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
@@ -31,12 +29,10 @@ export default function Contact() {
         formRef.current!,
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
       );
-
       setName('');
       setEmail('');
       setMessage('');
       setIsSubmitted(true);
-
       setTimeout(() => setIsSubmitted(false), 5000);
     } catch (error) {
       console.error('EmailJS Error:', error);
@@ -46,19 +42,17 @@ export default function Contact() {
   };
 
   return (
-    <section 
+    <section
       id="contact"
-      className="bg-gradient-to-b from-white to-gray-50 relative w-full overflow-hidden py-20" 
-      ref={containerRef}
+      className="relative bg-[#0a0a0f] py-24 overflow-hidden"
     >
-      {/* Background Decoration */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-20 right-10 w-72 h-72 bg-yellow-200 rounded-full opacity-20 blur-3xl" />
-        <div className="absolute bottom-20 left-10 w-96 h-96 bg-blue-200 rounded-full opacity-20 blur-3xl" />
-      </div>
+      {/* Background glows */}
+      <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-indigo-600/8 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-violet-600/8 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute inset-0 dot-grid-bg opacity-30" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -66,48 +60,52 @@ export default function Contact() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Get In Touch
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold text-pink-400 bg-pink-500/10 border border-pink-500/20 tracking-widest uppercase mb-4">
+            Contact
+          </span>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
+            Let&apos;s{" "}
+            <span className="gradient-text">Work Together</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Have a project in mind? Let's work together to build something great
+          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+            Have a project in mind or want to discuss opportunities? I&apos;d love to hear from you.
           </p>
-          <div className="w-24 h-1 bg-yellow-400 mx-auto mt-6 rounded-full" />
+          <div className="w-20 h-0.5 bg-gradient-to-r from-indigo-500 to-pink-500 mx-auto mt-6 rounded-full" />
         </motion.div>
 
-        {/* Contact Card */}
-        <div className="grid md:grid-cols-2 gap-12">
-          {/* Left Side - Form */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Left: Form */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100"
           >
-            <div className="space-y-6">
-              {/* Name Field */}
+            <form ref={formRef} onSubmit={handleSubmit} className="glass-card rounded-2xl p-8 space-y-6">
+              <h3 className="text-xl font-bold text-white mb-2">Send a Message</h3>
+
+              {/* Name */}
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-gray-700 font-medium flex items-center gap-2">
-                  <User className="w-4 h-4 text-yellow-500" />
-                  Name
+                <Label htmlFor="name" className="text-slate-300 text-sm font-medium flex items-center gap-2">
+                  <User className="w-3.5 h-3.5 text-indigo-400" />
+                  Your Name
                 </Label>
                 <Input
                   id="name"
                   name="user_name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter your name"
+                  placeholder="John Doe"
                   required
-                  className="border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-slate-600 focus:border-indigo-500 focus:ring-indigo-500/20 rounded-xl"
                 />
               </div>
 
-              {/* Email Field */}
+              {/* Email */}
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-700 font-medium flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-yellow-500" />
-                  Email
+                <Label htmlFor="email" className="text-slate-300 text-sm font-medium flex items-center gap-2">
+                  <Mail className="w-3.5 h-3.5 text-indigo-400" />
+                  Email Address
                 </Label>
                 <Input
                   id="email"
@@ -115,16 +113,16 @@ export default function Contact() {
                   name="user_email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder="john@example.com"
                   required
-                  className="border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-slate-600 focus:border-indigo-500 focus:ring-indigo-500/20 rounded-xl"
                 />
               </div>
 
-              {/* Message Field */}
+              {/* Message */}
               <div className="space-y-2">
-                <Label htmlFor="message" className="text-gray-700 font-medium flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4 text-yellow-500" />
+                <Label htmlFor="message" className="text-slate-300 text-sm font-medium flex items-center gap-2">
+                  <MessageSquare className="w-3.5 h-3.5 text-indigo-400" />
                   Message
                 </Label>
                 <Textarea
@@ -132,84 +130,141 @@ export default function Contact() {
                   name="message"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Tell me about your project..."
+                  placeholder="Tell me about your project or opportunity..."
                   required
-                  className="h-32 resize-none border-gray-200 focus:border-yellow-400 focus:ring-yellow-400"
+                  className="h-32 resize-none bg-white/5 border-white/10 text-white placeholder:text-slate-600 focus:border-indigo-500 focus:ring-indigo-500/20 rounded-xl"
                 />
               </div>
 
-              {/* Submit Button */}
               <Button
+                type="submit"
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold py-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+                className="w-full glow-btn py-6 rounded-xl font-semibold text-white border-0 text-base"
               >
                 {isSubmitting ? (
-                  <span className="flex items-center justify-center">
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  <span className="flex items-center justify-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
                     Sending...
                   </span>
                 ) : isSubmitted ? (
-                  <span className="flex items-center justify-center">
-                    <Check className="mr-2 h-5 w-5" />
+                  <span className="flex items-center justify-center gap-2">
+                    <Check className="h-4 w-4" />
                     Message Sent!
                   </span>
                 ) : (
-                  <span>Send Message</span>
+                  <span className="flex items-center justify-center gap-2">
+                    <Send className="h-4 w-4" />
+                    Send Message
+                  </span>
                 )}
               </Button>
-            </div>
+            </form>
           </motion.div>
 
-          {/* Right Side - Info Card */}
+          {/* Right: Info */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="space-y-6"
+            className="flex flex-col gap-6"
           >
-            {/* Main Card */}
-            <div className="bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-2xl p-8 shadow-xl text-gray-900 relative overflow-hidden h-full flex flex-col justify-center">
-              {/* Decorative Elements */}
-              <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-              <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
-              
-              <div className="relative z-10">
-                <h3 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
-                  Let's Build Something Amazing Together
+            {/* Status card */}
+            <div className="glass-card rounded-2xl p-8 flex flex-col gap-6">
+              <div>
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="w-3 h-3 rounded-full bg-emerald-400 animate-dot-pulse" />
+                  <span className="text-emerald-400 font-semibold text-sm">Currently Available</span>
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3">
+                  Open to Opportunities
                 </h3>
-                <p className="text-lg mb-8 text-gray-800">
-                  I'm always excited to work on new projects and collaborate with great people. Drop me a message and let's discuss how we can work together!
+                <p className="text-slate-400 leading-relaxed">
+                  I&apos;m actively looking for full-time roles as a Full Stack or Backend Developer.
+                  If you&apos;re hiring or want to collaborate, let&apos;s connect!
                 </p>
-                
-                {/* Info Items */}
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3 bg-white/20 backdrop-blur-sm rounded-lg p-4">
-                    <div className="bg-white rounded-full p-2">
-                      <Mail className="w-5 h-5 text-yellow-600" />
+              </div>
+
+              {/* Info rows */}
+              <div className="space-y-3">
+                {[
+                  { icon: <Mail className="w-4 h-4" />, label: "Response Time", value: "Within 24 hours" },
+                  { icon: <MessageSquare className="w-4 h-4" />, label: "Availability", value: "Open for full-time roles" },
+                ].map(({ icon, label, value }) => (
+                  <div key={label} className="flex items-center gap-3 p-4 rounded-xl bg-white/4 border border-white/8">
+                    <div className="w-9 h-9 rounded-lg bg-indigo-500/15 border border-indigo-500/25 flex items-center justify-center text-indigo-400 flex-shrink-0">
+                      {icon}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-800">Email Response Time</p>
-                      <p className="text-lg font-bold">Within 24 hours</p>
+                      <p className="text-xs text-slate-500 font-medium">{label}</p>
+                      <p className="text-sm text-white font-semibold">{value}</p>
                     </div>
                   </div>
-                  
-                  <div className="flex items-center gap-3 bg-white/20 backdrop-blur-sm rounded-lg p-4">
-                    <div className="bg-white rounded-full p-2">
-                      <MessageSquare className="w-5 h-5 text-yellow-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-800">Availability</p>
-                      <p className="text-lg font-bold">Open for opportunities</p>
-                    </div>
-                  </div>
+                ))}
+              </div>
+
+              {/* Direct contact */}
+              <div className="pt-2">
+                <p className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-3">Connect directly</p>
+                <div className="flex gap-3">
+                  {[
+                    {
+                      icon: <FaGithub size={18} />,
+                      label: "GitHub",
+                      href: "https://github.com/Durga1534",
+                      color: "hover:border-white/30 hover:text-white",
+                    },
+                    {
+                      icon: <FaLinkedin size={18} />,
+                      label: "LinkedIn",
+                      href: "https://www.linkedin.com/in/durgaprasad23",
+                      color: "hover:border-blue-500/40 hover:text-blue-400",
+                    },
+                    {
+                      icon: <Mail size={18} />,
+                      label: "Email",
+                      href: "mailto:kondurudurgaprasad.2@gmail.com",
+                      color: "hover:border-indigo-500/40 hover:text-indigo-400",
+                    },
+                  ].map(({ icon, label, href, color }) => (
+                    <motion.a
+                      key={label}
+                      href={href}
+                      target={label !== "Email" ? "_blank" : undefined}
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.08, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`flex-1 flex flex-col items-center gap-1.5 py-3 rounded-xl glass-card text-slate-400 text-xs font-medium transition-all duration-300 ${color}`}
+                    >
+                      {icon}
+                      <span>{label}</span>
+                    </motion.a>
+                  ))}
                 </div>
               </div>
+            </div>
+
+            {/* Quote card */}
+            <div className="glass-card rounded-2xl p-6 border-l-2 border-indigo-500">
+              <p className="text-slate-300 italic text-sm leading-relaxed">
+                &ldquo;Great software is built by committed people who care deeply about the craft.
+                That&apos;s the kind of developer I strive to be, every single day.&rdquo;
+              </p>
+              <p className="text-indigo-400 text-xs font-semibold mt-3">— Durga Prasad</p>
             </div>
           </motion.div>
         </div>
       </div>
+
+      {/* Footer */}
+      <div className="relative z-10 text-center mt-20 pb-4">
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-8" />
+        <p className="text-slate-600 text-sm">
+          Designed & built by{" "}
+          <span className="text-indigo-400 font-semibold">Durga Prasad</span> · {new Date().getFullYear()}
+        </p>
+      </div>
     </section>
   );
-};
+}
