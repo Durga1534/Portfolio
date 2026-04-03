@@ -5,7 +5,7 @@ import { FaReact, FaNodeJs, FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import {
   SiNextdotjs, SiTypescript, SiJavascript, SiTailwindcss, SiMongodb,
   SiExpress, SiSentry, SiFirebase, SiAppwrite, SiSupabase, SiPostgresql,
-  SiRedis, SiDocker, SiStripe,
+  SiRedis, SiDocker, SiStripe, SiPrisma, SiGoogle,
 } from "react-icons/si";
 
 interface Technology {
@@ -83,9 +83,30 @@ const projects: Project[] = [
   },
   {
     id: 4,
+    title: "JobSense AI",
+    description:
+      "Autonomous job hunt agent that scrapes job portals daily, scores listings against resume using Gemini AI, and delivers ranked WhatsApp digest and email reports.",
+    image: "/JobSense.png",
+    technologies: [
+      { icon: <FaNodeJs className="w-4 h-4" />, name: "Node.js" },
+      { icon: <SiTypescript className="w-4 h-4" />, name: "TypeScript" },
+      { icon: <SiExpress className="w-4 h-4" />, name: "Express" },
+      { icon: <SiGoogle className="w-4 h-4" />, name: "Gemini AI" },
+      { icon: <SiPostgresql className="w-4 h-4" />, name: "PostgreSQL" },
+      { icon: <SiRedis className="w-4 h-4" />, name: "Redis" },
+      { icon: <SiPrisma className="w-4 h-4" />, name: "Prisma" },
+    ],
+    githubUrl: "https://github.com/Durga1534/jobsense-ai",
+    category: "Backend",
+    featured: true,
+    accent: "from-emerald-500 to-teal-500",
+  },
+  {
+    id: 5,
     title: "API Rate-Limiter Gateway",
     description:
       "Production-grade API gateway with JWT auth, Redis-backed distributed rate limiting, structured logging, health checks, and Dockerized deployment.",
+    image: "/Rate-Limiter-API.png",
     technologies: [
       { icon: <FaNodeJs className="w-4 h-4" />, name: "Node.js" },
       { icon: <SiExpress className="w-4 h-4" />, name: "Express" },
@@ -98,7 +119,7 @@ const projects: Project[] = [
     accent: "from-orange-500 to-red-500",
   },
   {
-    id: 5,
+    id: 6,
     title: "Subscription & Billing System",
     description:
       "Backend system handling subscription lifecycle, invoice generation, renewals, cancellations, idempotent payments, and webhook-safe state transitions.",
@@ -112,6 +133,7 @@ const projects: Project[] = [
     category: "Backend",
     accent: "from-pink-500 to-rose-500",
   },
+  
 ];
 
 const CATEGORIES = ["All", "Full-Stack", "Backend"];
