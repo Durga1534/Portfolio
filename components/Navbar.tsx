@@ -1,15 +1,11 @@
 "use client";
+
 import { FC, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaBars, FaTimes } from "react-icons/fa";
 
-interface NavLink {
-  name: string;
-  href: string;
-}
-
-const navLinks: NavLink[] = [
+const navLinks = [
   { name: "About", href: "#about" },
+  { name: "Work", href: "#experience" },
   { name: "Skills", href: "#skills" },
   { name: "Projects", href: "#projects" },
   { name: "Contact", href: "#contact" },
@@ -17,14 +13,13 @@ const navLinks: NavLink[] = [
 
 const Navbar: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>("");
+  const [activeSection, setActiveSection] = useState("");
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-
-      const scrollPosition = window.scrollY + 150;
+      setScrolled(window.scrollY > 24);
+      const scrollPosition = window.scrollY + 120;
       const windowBottom = window.innerHeight + window.scrollY;
       const documentHeight = document.documentElement.scrollHeight;
 
@@ -32,9 +27,10 @@ const Navbar: FC = () => {
         const section = document.querySelector(link.href);
         if (section) {
           const el = section as HTMLElement;
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
+          if (
+            scrollPosition >= el.offsetTop &&
+            scrollPosition < el.offsetTop + el.offsetHeight
+          ) {
             setActiveSection(link.href);
           }
           if (index === navLinks.length - 1 && windowBottom >= documentHeight - 5) {
@@ -45,122 +41,93 @@ const Navbar: FC = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled
-          ? "bg-[#0a0a0f]/90 backdrop-blur-xl border-b border-white/10 shadow-[0_0_30px_rgba(99,102,241,0.05)]"
-          : "bg-transparent"
-        }`}
+    <header
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-background/85 backdrop-blur-md border-b border-border shadow-sm"
+          : ""
+      }`}
     >
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8 py-4">
-        {/* Logo */}
-        <motion.a
+      <div className="page-container flex justify-between items-center h-16 md:h-[4.5rem]">
+        <a
           href="#home"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center gap-2 group"
+          className="font-display text-lg text-foreground hover:opacity-80 transition-opacity tracking-tight"
         >
-          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-all duration-300">
-            <span className="text-white font-bold text-sm">DP</span>
-          </div>
-          <span className="text-white font-bold text-lg tracking-tight group-hover:text-indigo-400 transition-colors duration-300">
-            Durga<span className="text-indigo-400">.</span>dev
-          </span>
-        </motion.a>
+          Durga Prasad
+        </a>
 
-        {/* Desktop Navigation */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="hidden md:flex items-center gap-1"
-        >
+        <nav className="hidden md:flex items-center gap-8" aria-label="Main">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 group ${activeSection === link.href
-                  ? "text-white"
-                  : "text-slate-400 hover:text-white"
-                }`}
+              className={`text-sm transition-colors relative py-1 ${
+                activeSection === link.href
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
             >
+              {link.name}
               {activeSection === link.href && (
                 <motion.span
-                  layoutId="activeNav"
-                  className="absolute inset-0 bg-white/10 rounded-lg border border-white/15"
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+                  layoutId="navUnderline"
+                  className="absolute -bottom-0.5 left-0 right-0 h-px bg-foreground"
                 />
               )}
-              <span className="relative z-10">{link.name}</span>
             </a>
           ))}
+          <a href="#contact" className="btn-primary text-sm !py-2 !px-4">
+            Hire me
+          </a>
+        </nav>
 
-          {/* Hire Me Button */}
-          <motion.a
-            href="#contact"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            className="ml-4 px-5 py-2 rounded-lg text-sm font-semibold text-white glow-btn"
-          >
-            Hire Me ✦
-          </motion.a>
-        </motion.div>
-
-        {/* Mobile Toggle */}
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+        <button
+          type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-slate-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10"
-          aria-label="Toggle Menu"
+          className="md:hidden text-muted-foreground hover:text-foreground p-2 -mr-2"
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isOpen}
         >
-          {isOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
-        </motion.button>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            {isOpen ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 8h16M4 16h16" />}
+          </svg>
+        </button>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-[#0d0d16]/98 backdrop-blur-xl border-t border-white/10"
+            className="md:hidden border-t border-border bg-background/95 backdrop-blur-md overflow-hidden"
           >
-            <div className="flex flex-col px-4 py-4 space-y-1">
-              {navLinks.map((link, i) => (
-                <motion.a
+            <nav className="page-container py-4 flex flex-col gap-1" aria-label="Mobile">
+              {navLinks.map((link) => (
+                <a
                   key={link.name}
                   href={link.href}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.07 }}
                   onClick={() => setIsOpen(false)}
-                  className={`px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${activeSection === link.href
-                      ? "text-white bg-white/10 border border-white/15"
-                      : "text-slate-400 hover:text-white hover:bg-white/5"
-                    }`}
+                  className={`py-3 text-sm border-b border-border ${
+                    activeSection === link.href ? "text-foreground" : "text-muted-foreground"
+                  }`}
                 >
                   {link.name}
-                </motion.a>
+                </a>
               ))}
-              <a
-                href="#contact"
-                onClick={() => setIsOpen(false)}
-                className="mt-2 px-4 py-3 rounded-xl text-sm font-semibold text-white text-center glow-btn"
-              >
-                Hire Me ✦
+              <a href="#contact" onClick={() => setIsOpen(false)} className="btn-primary mt-4 text-center">
+                Hire me
               </a>
-            </div>
+            </nav>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </header>
   );
 };
 

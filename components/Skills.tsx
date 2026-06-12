@@ -1,154 +1,90 @@
 "use client";
 
-import React, { FC, useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaReact, FaNodeJs, FaGitAlt, FaGithub } from "react-icons/fa";
-import {
-  SiNextdotjs, SiJavascript, SiTypescript, SiTailwindcss, SiMongodb,
-  SiRender, SiSentry, SiVercel, SiExpress, SiFirebase, SiAppwrite,
-  SiSupabase, SiRedis, SiDocker, SiPostgresql, SiStripe,
-} from "react-icons/si";
-import { BiNetworkChart } from "react-icons/bi";
-import { RiShieldCheckFill, RiKey2Fill } from "react-icons/ri";
+import SectionHeader from "@/components/SectionHeader";
+import { skills, skillCategories, type SkillItem } from "@/lib/skills";
 
-interface Skill {
-  name: string;
-  icon: React.ReactElement;
-  category: string;
-  glow: string;
-}
-
-
-const skills: Skill[] = [
-  // Frontend
-  { name: "React", icon: <FaReact />, category: "Frontend", glow: "hover:shadow-sky-500/30" },
-  { name: "Next.js", icon: <SiNextdotjs />, category: "Frontend", glow: "hover:shadow-white/20" },
-  { name: "TypeScript", icon: <SiTypescript />, category: "Frontend", glow: "hover:shadow-blue-500/30" },
-  { name: "JavaScript", icon: <SiJavascript />, category: "Frontend", glow: "hover:shadow-yellow-400/30" },
-  { name: "Tailwind CSS", icon: <SiTailwindcss />, category: "Frontend", glow: "hover:shadow-cyan-400/30" },
-  // Backend
-  { name: "Node.js", icon: <FaNodeJs />, category: "Backend", glow: "hover:shadow-green-500/30" },
-  { name: "Express.js", icon: <SiExpress />, category: "Backend", glow: "hover:shadow-white/20" },
-  { name: "REST APIs", icon: <BiNetworkChart />, category: "Backend", glow: "hover:shadow-purple-500/30" },
-  { name: "JWT Auth", icon: <RiShieldCheckFill />, category: "Backend", glow: "hover:shadow-blue-500/30" },
-  { name: "OAuth", icon: <RiKey2Fill />, category: "Backend", glow: "hover:shadow-orange-500/30" },
-  // Database
-  { name: "MongoDB", icon: <SiMongodb />, category: "Database", glow: "hover:shadow-green-600/30" },
-  { name: "PostgreSQL", icon: <SiPostgresql />, category: "Database", glow: "hover:shadow-blue-600/30" },
-  { name: "Redis", icon: <SiRedis />, category: "Database", glow: "hover:shadow-red-500/30" },
-  { name: "Firebase", icon: <SiFirebase />, category: "Database", glow: "hover:shadow-yellow-500/30" },
-  { name: "Supabase", icon: <SiSupabase />, category: "Database", glow: "hover:shadow-green-400/30" },
-  { name: "Appwrite", icon: <SiAppwrite />, category: "Database", glow: "hover:shadow-pink-500/30" },
-  // Tools
-  { name: "Git", icon: <FaGitAlt />, category: "Tools", glow: "hover:shadow-orange-500/30" },
-  { name: "GitHub", icon: <FaGithub />, category: "Tools", glow: "hover:shadow-white/20" },
-  { name: "Docker", icon: <SiDocker />, category: "Tools", glow: "hover:shadow-blue-500/30" },
-  { name: "Vercel", icon: <SiVercel />, category: "Tools", glow: "hover:shadow-white/20" },
-  { name: "Render", icon: <SiRender />, category: "Tools", glow: "hover:shadow-violet-500/30" },
-  { name: "Sentry", icon: <SiSentry />, category: "Tools", glow: "hover:shadow-purple-600/30" },
-  { name: "Stripe", icon: <SiStripe />, category: "Tools", glow: "hover:shadow-indigo-500/30" },
-];
-
-const CATEGORIES = ["All", "Frontend", "Backend", "Database", "Tools"];
-
-const categoryColors: Record<string, string> = {
-  Frontend: "from-sky-500 to-blue-500",
-  Backend: "from-green-500 to-emerald-500",
-  Database: "from-orange-500 to-red-500",
-  Tools: "from-violet-500 to-purple-500",
-};
-
-const SkillCard: FC<{ skill: Skill; index: number }> = ({ skill, index }) => (
+const SkillCard = ({ skill, index }: { skill: SkillItem; index: number }) => (
   <motion.div
-    initial={{ opacity: 0, y: 20, scale: 0.9 }}
-    animate={{ opacity: 1, y: 0, scale: 1 }}
-    exit={{ opacity: 0, y: -10, scale: 0.9 }}
-    transition={{ duration: 0.3, delay: index * 0.04 }}
-    whileHover={{ y: -4, scale: 1.05 }}
-    className={`glass-card rounded-2xl p-4 flex flex-col items-center gap-2 cursor-default group transition-all duration-300 hover:border-white/20 hover:shadow-lg ${skill.glow}`}
+    layout
+    initial={{ opacity: 0, scale: 0.92, y: 12 }}
+    animate={{ opacity: 1, scale: 1, y: 0 }}
+    exit={{ opacity: 0, scale: 0.92, y: -8 }}
+    transition={{ duration: 0.35, delay: index * 0.03, ease: [0.22, 1, 0.36, 1] }}
+    className="skill-chip"
+    style={
+      {
+        "--skill-accent": skill.accent,
+        "--skill-bg": skill.bg,
+        "--skill-border": skill.border,
+        "--skill-text": skill.text,
+        "--skill-glow": skill.glow,
+      } as CSSProperties
+    }
   >
-    <div className="text-2xl group-hover:scale-110 transition-transform duration-300 text-slate-300 group-hover:text-white">
-      {skill.icon}
+    <div className="relative z-10 flex items-center justify-between">
+      <span className="skill-dot" />
+      <span className="font-mono-label text-[10px] uppercase tracking-wider opacity-60">
+        {skill.category}
+      </span>
     </div>
-    <span className="text-xs font-medium text-slate-400 group-hover:text-slate-200 transition-colors duration-300 text-center leading-tight">
-      {skill.name}
-    </span>
+    <p className="relative z-10 font-medium text-[0.95rem] leading-tight">{skill.name}</p>
   </motion.div>
 );
 
-const Skills: FC = () => {
-  const [active, setActive] = useState("All");
-
-  const filtered = active === "All" ? skills : skills.filter((s) => s.category === active);
+const Skills = () => {
+  const [active, setActive] = useState<string>("All");
+  const filtered =
+    active === "All" ? skills : skills.filter((s) => s.category === active);
 
   return (
     <section
       id="skills"
-      className="relative bg-[#0a0a0f] py-24 overflow-hidden scroll-mt-20"
+      className="section-padding scroll-mt-20 border-t border-border skills-section-bg relative overflow-hidden"
     >
-      {/* Background glows */}
-      <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-violet-600/8 rounded-full blur-[120px] pointer-events-none -translate-y-1/2" />
-      <div className="absolute top-1/2 right-0 w-[300px] h-[300px] bg-cyan-600/8 rounded-full blur-[100px] pointer-events-none -translate-y-1/2" />
+      <div
+        className="absolute top-20 right-[-10%] w-[420px] h-[420px] rounded-full opacity-40 animate-float-soft pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(99,102,241,0.25) 0%, transparent 70%)" }}
+      />
+      <div
+        className="absolute bottom-10 left-[-8%] w-[360px] h-[360px] rounded-full opacity-35 animate-float-soft pointer-events-none"
+        style={{
+          background: "radial-gradient(circle, rgba(251,191,36,0.22) 0%, transparent 70%)",
+          animationDelay: "-5s",
+        }}
+      />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold text-violet-400 bg-violet-500/10 border border-violet-500/20 tracking-widest uppercase mb-4">
-            Tech Stack
-          </span>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
-            Skills &{" "}
-            <span className="gradient-text">Tools</span>
-          </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Technologies I use to bring ideas to life
-          </p>
-          <div className="w-20 h-0.5 bg-gradient-to-r from-violet-500 to-cyan-500 mx-auto mt-6 rounded-full" />
-        </motion.div>
+      <div className="page-container relative z-10">
+        <SectionHeader
+          number="03 — Skills"
+          title="Every tool, individually sharp."
+          subtitle="Each skill stands on its own — hover to see its accent come alive."
+        />
 
-        {/* Category tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="flex flex-wrap justify-center gap-2 mb-12"
+        <div
+          className="flex flex-wrap gap-2 mb-10"
+          role="tablist"
+          aria-label="Filter skills"
         >
-          {CATEGORIES.map((cat) => (
+          {skillCategories.map((cat) => (
             <button
               key={cat}
+              role="tab"
+              aria-selected={active === cat}
               onClick={() => setActive(cat)}
-              className={`relative px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${active === cat
-                ? "text-white"
-                : "text-slate-400 hover:text-white glass-card hover:border-white/15"
-                }`}
+              className={`font-mono-label text-xs px-4 py-2 rounded-full border transition-all ${
+                active === cat
+                  ? "bg-foreground text-background border-foreground shadow-md"
+                  : "bg-white/80 text-muted-foreground border-border hover:border-foreground/20 hover:text-foreground"
+              }`}
             >
-              {active === cat && (
-                <motion.div
-                  layoutId="activeSkillTab"
-                  className={`absolute inset-0 rounded-xl bg-gradient-to-r ${cat === "All"
-                    ? "from-indigo-500 to-violet-500"
-                    : categoryColors[cat]
-                    }`}
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
-                />
-              )}
-              <span className="relative z-10">{cat}</span>
+              {cat}
             </button>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Skills grid */}
-        <motion.div
-          layout
-          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3"
-        >
+        <motion.div layout className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
           <AnimatePresence mode="popLayout">
             {filtered.map((skill, i) => (
               <SkillCard key={skill.name} skill={skill} index={i} />
@@ -156,22 +92,9 @@ const Skills: FC = () => {
           </AnimatePresence>
         </motion.div>
 
-        {/* Legend */}
-        {active === "All" && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="flex flex-wrap justify-center gap-4 mt-12"
-          >
-            {Object.entries(categoryColors).map(([cat, gradient]) => (
-              <div key={cat} className="flex items-center gap-2">
-                <div className={`w-2.5 h-2.5 rounded-full bg-gradient-to-r ${gradient}`} />
-                <span className="text-xs text-slate-500">{cat}</span>
-              </div>
-            ))}
-          </motion.div>
-        )}
+        <p className="text-center text-sm text-muted-foreground mt-10">
+          {filtered.length} skills · {active === "All" ? "full stack" : active}
+        </p>
       </div>
     </section>
   );
